@@ -1,83 +1,71 @@
 const shayariDB = {
   "Love": [
     "तेरे बिना अधूरी है ज़िंदगी मेरी...",
-    "तू है तो सब कुछ है, वरना कुछ भी नहीं...",
     "दिल ने जिसे चाहा है, वो तू ही तो है...",
-    "तेरी हँसी मेरी जान है...",
     "तेरे साथ हर पल हसीन है..."
-  ],
-  "Birthday": [
-    "जन्मदिन की ढेरों शुभकामनाएं...",
-    "आपका दिन खुशियों से भरा हो...",
-    "जन्मदिन मुबारक हो मेरी जान...",
-    "आपका हर ख्वाब पूरा हो...",
-    "खुश रहो हमेशा, जन्मदिन की बधाई!"
   ],
   "Friendship": [
     "सच्चा दोस्त वही जो मुश्किल में काम आए...",
     "दिल से निभाई जाती है दोस्ती...",
-    "दोस्ती नाम है विश्वास का...",
-    "यारी वही जो हर मोड़ पर साथ दे...",
-    "सच्ची दोस्ती दिल से होती है..."
+    "दोस्ती नाम है विश्वास का..."
+  ],
+  "Birthday": [
+    "जन्मदिन की ढेरों शुभकामनाएं...",
+    "आपका दिन खुशियों से भरा हो...",
+    "खुश रहो हमेशा, जन्मदिन की बधाई!"
   ]
 };
 
+// Populate category dropdown on page load
 window.onload = () => {
   const categorySelect = document.getElementById("categorySelect");
-  if (!categorySelect) return;
-  for (let category in shayariDB) {
-    const opt = document.createElement("option");
-    opt.value = category;
-    opt.textContent = category;
-    categorySelect.appendChild(opt);
-  }
+  Object.keys(shayariDB).forEach(category => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    categorySelect.appendChild(option);
+  });
+  document.getElementById("shareOptions").style.display = "none";
 };
 
 function updateShayariOptions() {
-  const category = document.getElementById("categorySelect")?.value;
+  const category = document.getElementById("categorySelect").value;
   const shayariSelect = document.getElementById("shayariSelect");
-  if (!shayariSelect || !category) return;
-
   shayariSelect.innerHTML = '<option value="">-- शायरी चुनें --</option>';
 
   if (shayariDB[category]) {
     shayariDB[category].forEach(shayari => {
-      const opt = document.createElement("option");
-      opt.value = shayari;
-      opt.textContent = shayari;
-      shayariSelect.appendChild(opt);
+      const option = document.createElement("option");
+      option.value = shayari;
+      option.textContent = shayari;
+      shayariSelect.appendChild(option);
     });
   }
 }
 
 function fillShayari() {
-  const selected = document.getElementById("shayariSelect")?.value;
-  const shayariText = document.getElementById("shayariText");
-  if (shayariText) {
-    shayariText.value = selected;
-  }
+  const shayari = document.getElementById("shayariSelect").value;
+  document.getElementById("shayariText").value = shayari;
 }
 
 function generateImage() {
-  const file = document.getElementById("imageUpload")?.files[0];
-  const color = document.getElementById("colorPicker")?.value;
-  const fontSize = document.getElementById("fontSize")?.value;
-  const position = document.getElementById("positionSelect")?.value;
-  const text = document.getElementById("shayariText")?.value;
+  const file = document.getElementById("imageUpload").files[0];
+  const text = document.getElementById("shayariText").value;
+  const fontSize = document.getElementById("fontSize").value;
+  const color = document.getElementById("colorPicker").value;
+  const position = document.getElementById("positionSelect").value;
 
   if (!file) return alert("कृपया एक फोटो चुनें!");
 
   const reader = new FileReader();
-  reader.onload = (e) => {
+  reader.onload = function (e) {
     const img = new Image();
-    img.onload = () => {
+    img.onload = function () {
       const canvas = document.getElementById("canvas");
       const ctx = canvas.getContext("2d");
 
       canvas.width = img.width;
       canvas.height = img.height;
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.drawImage(img, 0, 0);
 
       ctx.font = `${fontSize}px 'Noto Sans Devanagari', sans-serif`;
@@ -87,14 +75,16 @@ function generateImage() {
       ctx.textAlign = "center";
 
       const x = canvas.width / 2;
-      const y = position === "top" ? 80 : canvas.height - 60;
+      const y = position === "top" ? 100 : canvas.height - 80;
 
       ctx.strokeText(text, x, y);
       ctx.fillText(text, x, y);
 
-      const output = document.getElementById("outputImage");
-      output.src = canvas.toDataURL("image/png");
-      output.style.display = "block";
+      const outputImage = document.getElementById("outputImage");
+      outputImage.src = canvas.toDataURL("image/png");
+      outputImage.style.display = "block";
+
+      document.getElementById("shareOptions").style.display = "flex";
     };
     img.src = e.target.result;
   };
@@ -102,30 +92,29 @@ function generateImage() {
 }
 
 function downloadImage() {
-  const output = document.getElementById("outputImage");
-  if (!output?.src) return alert("पहले इमेज बनाएं!");
+  const outputImage = document.getElementById("outputImage");
+  if (!outputImage.src) return alert("पहले इमेज बनाएं!");
 
-  const link = document.createElement("a");
-  link.href = output.src;
-  link.download = "shayari-photo.png";
-  link.click();
+  const a = document.createElement("a");
+  a.href = outputImage.src;
+  a.download = "shayari-image.png";
+  a.click();
 }
 
-function shareWhatsApp() {
+function share(platform) {
   const canvas = document.getElementById("canvas");
   canvas.toBlob(blob => {
-    const file = new File([blob], "shayari.png", { type: "image/png" });
+    const file = new File([blob], "shayari-image.png", { type: "image/png" });
 
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({
-        title: "Shayari Image",
-        text: "मैंने Shayari फोटो बनाई है:\nhttps://myshaadistyle.blogspot.com",
-        files: [file]
-      });
-    } else {
-      const text = encodeURIComponent("मैंने Shayari फोटो बनाई है, आप भी बनाओ:\nhttps://myshaadistyle.blogspot.com");
-      const link = `https://wa.me/?text=${text}`;
-      window.open(link, "_blank");
+    if (platform === 'whatsapp') {
+      const url = encodeURIComponent("मैंने Shayari फोटो बनाई है:\nhttps://myshaadistyle.blogspot.com");
+      window.open(`https://wa.me/?text=${url}`, "_blank");
+    } else if (platform === 'facebook') {
+      const shareURL = encodeURIComponent("https://myshaadistyle.blogspot.com");
+      const quote = encodeURIComponent("फोटो पर शायरी बनाओ और शेयर करो!");
+      window.open(`https://www.facebook.com/sharer/sharer.php?u=${shareURL}&quote=${quote}`, "_blank");
+    } else if (platform === 'instagram') {
+      alert("Instagram में शेयर करने के लिए इमेज डाउनलोड करें और ऐप में अपलोड करें.");
     }
   });
   }
