@@ -1,107 +1,84 @@
-// Auto-load random shayari from selected category
-document.getElementById("categorySelect").addEventListener("change", function () {
-  const cat = this.value;
-  if (cat !== "custom") {
-    fetch(`shayari/${cat}.txt`)
-      .then(res => res.text())
-      .then(data => {
-        const lines = data.split("\n").filter(Boolean);
-        const random = lines[Math.floor(Math.random() * lines.length)];
-        document.getElementById("shayariText").value = random;
-      });
-  } else {
-    document.getElementById("shayariText").value = "";
+// Shayari Database
+const shayariDB = {
+  "Love": [
+    "तेरे बिना अधूरी है ज़िंदगी मेरी...",
+    "तू है तो सब कुछ है, वरना कुछ भी नहीं...",
+    "मोहब्बत में नहीं है फर्क जीने और मरने का...",
+    "दिल ने जिसे चाहा है, वो तू ही तो है...",
+    "तेरी हँसी मेरी जान है..."
+  ],
+  "Friendship": [
+    "दोस्ती नाम है सुख-दुख की कहानी का...",
+    "सच्चा दोस्त वही जो मुश्किल में काम आए...",
+    "दोस्ती वो नहीं जो जान देती है...",
+    "यारी वही जो हर मोड़ पर साथ निभाए...",
+    "हंसते रहो दोस्तों की तरह..."
+  ],
+  "Birthday": [
+    "जन्मदिन की ढेरों शुभकामनाएं...",
+    "आपका दिन खुशियों से भरा हो...",
+    "जन्मदिन मुबारक हो मेरी जान...",
+    "आपका हर ख्वाब पूरा हो...",
+    "बर्थडे पर दुआ है आपके लिए..."
+  ],
+  "Motivational": [
+    "जो ठान लिया वो करके दिखाओ...",
+    "कभी हार मत मानो...",
+    "सपने वही जो नींद तोड़ दें...",
+    "हार मत मानो, जीत करीब है...",
+    "कोशिश करने वालों की हार नहीं होती..."
+  ],
+  "Sad": [
+    "अब तुझसे क्या शिकवा करें...",
+    "तन्हाई में भीगते हैं ख्वाब...",
+    "खुश रहो तुम, यही दुआ है...",
+    "तेरे बिना अधूरा हूं मैं...",
+    "बिछड़ के भी तुझसे मोहब्बत है..."
+  ],
+  "Funny": [
+    "पढ़ाई का क्या है, नींद आती है...",
+    "मैं तो सोशल मीडिया का राजा...",
+    "जब देखो तब भूख लगती है...",
+    "गर्लफ्रेंड हो या WIFI, सिग्नल कमजोर...",
+    "पढ़ना है तो मजाक छोड़ो..."
+  ],
+  "Attitude": [
+    "हमसे जलने वाले भी कमाल करते हैं...",
+    "शेर अपनी ताकत से राजा होता है...",
+    "Attitude हमारा जन्मजात है...",
+    "हम वो हैं जो दिल में उतरते हैं...",
+    "हमसे पंगा नहीं लेने का..."
+  ],
+  "Good Morning": [
+    "सुप्रभात! आपका दिन मंगलमय हो...",
+    "नया दिन, नई शुरुआत...",
+    "सुप्रभात! मुस्कराते रहो...",
+    "हर सुबह एक नई आशा लाती है...",
+    "खुश रहो हर सुबह की तरह..."
+  ],
+  "Good Night": [
+    "शुभ रात्रि! मीठे सपने देखें...",
+    "रात का चाँद आपके साथ हो...",
+    "Good Night, Take Care...",
+    "हर सपना हो पूरा... शुभ रात्रि!",
+    "सो जाइए जनाब... रात काफी हो चुकी है..."
+  ],
+  "Romantic": [
+    "तेरे ख्यालों में ही बीतते हैं दिन...",
+    "तेरी हर बात में कुछ खास है...",
+    "हर पल तुझसे जुड़ा रहता है दिल...",
+    "तेरा नाम ही काफी है...",
+    "तेरे साथ हर पल हसीन है..."
+  ]
+};
+
+// Populate Category Dropdown
+window.onload = function () {
+  const catSelect = document.getElementById("categorySelect");
+  for (let category in shayariDB) {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    catSelect.appendChild(option);
   }
-});
-
-// Trigger canvas generation from custom button
-function useCustomShayari() {
-  const textarea = document.getElementById("shayariText");
-  if (!textarea.value.trim()) {
-    alert("कृपया अपनी शायरी पहले लिखें।");
-    return;
-  }
-  generateImage();
-}
-
-// Listen for custom typing & switch category to 'custom'
-document.getElementById("shayariText").addEventListener("input", () => {
-  document.getElementById("categorySelect").value = "custom";
-});
-
-// Generate image with shayari overlay
-function generateImage() {
-  const canvas = document.getElementById("shayariCanvas");
-  const ctx = canvas.getContext("2d");
-
-  const file = document.getElementById("imageInput").files[0];
-  if (!file) {
-    alert("कृपया एक तस्वीर चुनें।");
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = function () {
-    const img = new Image();
-    img.onload = function () {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-
-      const text = document.getElementById("shayariText").value;
-      const pos = document.getElementById("positionSelect").value;
-
-      ctx.font = "30px 'Noto Sans Devanagari', sans-serif";
-      ctx.fillStyle = "white";
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 3;
-      ctx.textAlign = "center";
-
-      const x = canvas.width / 2;
-      const y = pos === "top" ? 50 : canvas.height - 30;
-
-      wrapText(ctx, text, x, y, canvas.width * 0.9, 40);
-    };
-    img.src = reader.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-// Optional: Word wrap the shayari text if too long
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = text.split(' ');
-  let line = '';
-  for (let i = 0; i < words.length; i++) {
-    const testLine = line + words[i] + ' ';
-    const metrics = ctx.measureText(testLine);
-    if (metrics.width > maxWidth && i > 0) {
-      ctx.strokeText(line, x, y);
-      ctx.fillText(line, x, y);
-      line = words[i] + ' ';
-      y += lineHeight;
-    } else {
-      line = testLine;
-    }
-  }
-  ctx.strokeText(line, x, y);
-  ctx.fillText(line, x, y);
-}
-
-// Share generated canvas with message
-function shareImage() {
-  const canvas = document.getElementById("shayariCanvas");
-  const msg = "ये शायरी आपके लिए बनाई है! अपनी खुद की बनाएं: https://photopenaam.in";
-
-  if (navigator.canShare && navigator.canShare({ files: [] })) {
-    canvas.toBlob(blob => {
-      const file = new File([blob], "shayari.png", { type: "image/png" });
-      navigator.share({
-        title: "शायरी फोटो",
-        text: msg,
-        files: [file]
-      }).catch(console.error);
-    });
-  } else {
-    alert("शेयरिंग सपोर्टेड नहीं है। आप इमेज डाउनलोड कर सकते हैं।");
-  }
-}
+};
