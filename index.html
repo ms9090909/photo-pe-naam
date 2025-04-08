@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="शायरी फोटो जनरेटर - हिंदी में जनमदिन, प्यार, दोस्ती, उदासी और भी शायरी लिखें अपनी फोटो पर।"/>
+  <meta name="keywords" content="Shayari on image, Birthday Shayari, Hindi Shayari Generator, Hindi Status Maker"/>
+  <meta name="author" content="PhotoPeShayari.in"/>
+  <title>Shayari Likho Photo Pe</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="adsense.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>शायरी लिखो अपनी फोटो पर</h1>
+    <p>अपनी तस्वीरों पर भावनाओं की स्याही</p>
+  </header>
+
+  <!-- Top Ad -->
+  <div class="ad ad-top">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+
+  <!-- Control Panel -->
+  <section class="controls">
+    <label>तस्वीर चुनें:</label><br/>
+    <input type="file" id="imageInput" accept="image/*" /><br/>
+
+    <label>श्रेणी चुनें:</label><br/>
+    <select id="categorySelect">
+      <option value="birthday">🎂 जन्मदिन</option>
+      <option value="love">❤️ प्यार</option>
+      <option value="sad">😢 उदासी</option>
+      <option value="friendship">🤝 दोस्ती</option>
+      <option value="cute">✨ प्यारी बात</option>
+      <option value="custom">✍️ अपनी शायरी</option>
+    </select><br/>
+
+    <label>शायरी लिखें:</label><br/>
+    <textarea id="shayariText" placeholder="यहाँ अपनी शायरी लिखें..."></textarea><br/>
+
+    <label>स्थिति:</label>
+    <select id="positionSelect">
+      <option value="top">ऊपर</option>
+      <option value="bottom">नीचे</option>
+    </select><br/>
+
+    <button onclick="generateImage()">शायरी लगाओ</button>
+  </section>
+
+  <canvas id="shayariCanvas" width="400" height="400"></canvas>
+
+  <!-- Share Button -->
+  <section class="share-section">
+    <button onclick="shareImage()">शेयर करो</button>
+  </section>
+
+  <!-- Bottom Ad -->
+  <div class="ad ad-bottom">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXX"
+         data-ad-slot="XXXXXXXXXX"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+  </div>
+
+  <footer>
+    <p>© 2025 PhotoPeShayari.in | तस्वीर पर दिल से शायरी</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
