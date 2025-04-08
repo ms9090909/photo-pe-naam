@@ -11,6 +11,9 @@ body {
   padding: 20px;
   max-width: 500px;
   margin: auto;
+  background: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  border-radius: 8px;
 }
 
 h1 {
@@ -21,7 +24,8 @@ h1 {
 input[type="file"],
 select,
 textarea,
-button {
+button,
+input[type="color"] {
   width: 100%;
   margin: 10px 0;
   padding: 12px;
@@ -30,43 +34,50 @@ button {
   border: 1px solid #ccc;
 }
 
+textarea {
+  resize: vertical;
+  min-height: 60px;
+}
+
 button {
   background-color: #e91e63;
   color: white;
   border: none;
   cursor: pointer;
+  transition: background 0.3s;
 }
 
 button:hover {
   background-color: #c2185b;
 }
 
-textarea {
-  resize: vertical;
-  min-height: 60px;
-}
-
 img#outputImage {
   width: 100%;
   margin-top: 15px;
   border-radius: 5px;
+  display: none;
 }
 
 .ad-banner {
-  margin: 10px 0;
-  text-align: center;
+  margin: 15px 0;
 }
 
-/* Responsive for small screens */
-@media only screen and (max-width: 600px) {
-  body {
-    font-size: 16px;
-  }
+.share-btns {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
 
+.share-btns button {
+  flex: 1 1 45%;
+}
+
+/* Responsive */
+@media only screen and (max-width: 600px) {
   h1 {
     font-size: 1.5em;
   }
-
   .wrapper {
     padding: 10px;
   }
