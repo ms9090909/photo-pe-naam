@@ -1,63 +1,53 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Photo Par Naam Shayari Creator - Add Shayari, Wishes, Emojis to Your Image. Download or Share Instantly!">
-  <title>Photo Pe Naam - Shayari Creator</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Shayari Creator Ninja Mode</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-
   <header>
-    <h1>Photo पर शायरी लिखें</h1>
+    <h1>Shayari Pe Naam</h1>
   </header>
 
-  <!-- Ad Placeholder (You replace this with your AdSense code) -->
-  <div class="ad-banner">[Ad Banner]</div>
+  <main>
+    <div class="canvas-section">
+      <canvas id="imageCanvas"></canvas>
+    </div>
 
-  <section class="main-container">
-
-    <input type="file" id="imageUpload" accept="image/*">
-    
     <div class="controls">
-      <label>शायरी कैटेगरी</label>
-      <select id="categorySelect" onchange="updateShayariOptions()"></select>
-
-      <label>शायरी चुनें</label>
-      <select id="shayariSelect" onchange="fillShayari()">
-        <option>-- शायरी चुनें --</option>
+      <input type="file" id="imageUpload" accept="image/*" />
+      
+      <select id="shayariSelect">
+        <option value="">Choose Shayari</option>
+        <option>तू सामने हो ये जरूरी नहीं, तेरे साथ होना जरूरी है।</option>
+        <option>मुस्कुराहट एक शायरी है, जो हर चेहरे पे सजती है।</option>
+        <option>तेरी यादों का मौसम हमेशा मेरे आसपास रहता है।</option>
+        <!-- Add more shayaris here -->
       </select>
 
-      <textarea id="shayariText" rows="3" placeholder="अपनी शायरी लिखें..."></textarea>
-
-      <label>स्थिति:</label>
-      <select id="positionSelect">
-        <option value="top">ऊपर</option>
-        <option value="bottom">नीचे</option>
+      <select id="fontSizeSelect">
+        <option value="24">Small</option>
+        <option value="32">Medium</option>
+        <option value="40">Large</option>
       </select>
 
-      <label>रंग:</label>
-      <input type="color" id="colorPicker" value="#ffffff">
+      <select id="colorSelect">
+        <option value="#ffffff">White</option>
+        <option value="#000000">Black</option>
+        <option value="#ff4081">Pink</option>
+        <option value="#00e676">Green</option>
+        <option value="#2196f3">Blue</option>
+      </select>
 
-      <label>फ़ॉन्ट साइज:</label>
-      <input type="range" id="fontSize" min="20" max="60" value="40">
-
-      <button onclick="generateImage()">इमेज बनाएं</button>
+      <button onclick="downloadImage()">Download</button>
+      <button onclick="shareImage()">Share on WhatsApp</button>
     </div>
-
-    <canvas id="canvas" style="display:none;"></canvas>
-    <img id="outputImage" alt="Output" style="display:none;" />
-
-    <div class="button-group">
-      <button onclick="downloadImage()">डाउनलोड</button>
-      <button onclick="shareWhatsApp()">WhatsApp पर शेयर</button>
-      <button onclick="shareFacebook()">Facebook</button>
-    </div>
-  </section>
+  </main>
 
   <footer>
-    <p>Made with ❤️ by Ninja | Ad supported</p>
+    <div class="ad-banner">[Ad Banner Here]</div>
   </footer>
 
   <script src="script.js"></script>
