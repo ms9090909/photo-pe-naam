@@ -1,105 +1,101 @@
-/* General Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+let selectedImage = null;
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
 
-body {
-  font-family: 'Noto Sans Devanagari', sans-serif;
-  background: #f0f0f3;
-  color: #333;
-  padding: 1rem;
-  line-height: 1.6;
-}
+document.getElementById("imageUpload").addEventListener("change", function (e) {
+  const reader = new FileReader();
+  reader.onload = function (event) {
+    const img = new Image();
+    img.onload = function () {
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      selectedImage = img;
+    };
+    img.src = event.target.result;
+  };
+  reader.readAsDataURL(e.target.files[0]);
+});
 
-h1 {
-  text-align: center;
-  color: #e91e63;
-  margin-bottom: 1rem;
-}
+function updateShayariOptions() {
+  const category = document.getElementById("categorySelect").value;
+  const shayariSelect = document.getElementById("shayariSelect");
+  shayariSelect.innerHTML = "";
 
-.container {
-  max-width: 500px;
-  margin: auto;
-  background: white;
-  padding: 1.5rem;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.08);
-}
+  const shayaris = {
+    "romantic": ["तेरा नाम लूं जुबां से...", "तू मिले या ना मिले..."],
+    "sad": ["दर्द ही मेरा नसीब है...", "आंसुओं से भरी ये ज़िन्दगी..."],
+    "motivational": ["जो सपना देखा है उसे पूरा कर...", "हार मत मान, चल पड़..."]
+  };
 
-label {
-  font-weight: bold;
-  display: block;
-  margin-top: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-select,
-textarea,
-input[type="file"],
-input[type="color"],
-input[type="range"] {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-textarea {
-  resize: none;
-}
-
-button {
-  background: #e91e63;
-  color: white;
-  border: none;
-  padding: 0.75rem;
-  margin-top: 1rem;
-  width: 100%;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
-  background: #c2185b;
-}
-
-canvas, #outputImage {
-  max-width: 100%;
-  margin-top: 1rem;
-  border: 1px solid #ddd;
-  display: block;
-  border-radius: 6px;
-}
-
-.actions {
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.ad-banner {
-  margin: 1rem auto;
-  text-align: center;
-}
-
-/* Mobile First */
-@media (max-width: 480px) {
-  body {
-    padding: 0.5rem;
+  if (shayaris[category]) {
+    shayaris[category].forEach(text => {
+      const option = document.createElement("option");
+      option.value = text;
+      option.textContent = text;
+      shayariSelect.appendChild(option);
+    });
   }
+}
 
-  .container {
-    padding: 1rem;
-  }
+function fillShayari() {
+  const selected = document.getElementById("shayariSelect").value;
+  document.getElementById("shayariText").value = selected;
+}
 
-  button {
-    font-size: 0.95rem;
-  }
+function generateImage() {
+  if (!selectedImage) return alert("पहले फोटो अपलोड करें");
+
+  ctx.drawImage(selectedImage, 0, 0);
+  const text = document.getElementById("shayariText").value;
+  const position = document.getElementById("positionSelect").value;
+  const color = document.getElementById("colorPicker").value;
+  const fontSize = document.getElementById("fontSize").value;
+
+  ctx.fillStyle = color;
+  ctx.font = `${fontSize}px 'Noto Sans Devanagari'`;
+  ctx.textAlign = "center";
+
+  const x = canvas.width / 2;
+  const y = position === "top" ? fontSize : canvas.height - 30;
+
+  const lines = text.split("\n");
+  lines.forEach((line, i) => {
+    ctx.fillText(line, x, y + i * (parseInt(fontSize) + 10));
+  });
+
+  const outputImg = document.getElementById("outputImage");
+  outputImg.src = canvas.toDataURL("image/png");
+  outputImg.style.display = "block";
+
+  document.getElementById("shareOptions").style.display = "flex";
+}
+
+function downloadImage() {
+  const a = document.createElement("a");
+  a.href = canvas.toDataURL("image/png");
+  a.download = "shayari-image.png";
+  a.click();
+}
+
+function share(platform) {
+  canvas.toBlob(blob => {
+    const file = new File([blob], "shayari.png", { type: "image/png" });
+
+    if (platform === "whatsapp") {
+      const shareData = {
+        files: [file],
+        title: "Shayari Image",
+        text: "देखो मेरी बनाई हुई शायरी!",
+      };
+
+      if (navigator.canShare && navigator.canShare(shareData)) {
+        navigator.share(shareData).catch(console.error);
+      } else {
+        alert("इस डिवाइस पर शेयर सपोर्ट नहीं करता");
+      }
+    } else {
+      alert(`${platform} के लिए अलग शेयर विकल्प जल्द आएगा!`);
+    }
+  });
 }
