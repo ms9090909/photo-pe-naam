@@ -44,6 +44,9 @@ function fillShayari() {
 
 function generateImage() {
   const file = document.getElementById("imageUpload").files[0];
+  const color = document.getElementById("colorPicker").value;
+  const fontSize = document.getElementById("fontSize").value;
+
   if (!file) return alert("कृपया एक फोटो चुनें!");
 
   const reader = new FileReader();
@@ -59,24 +62,22 @@ function generateImage() {
 
       const text = document.getElementById("shayariText").value;
       const position = document.getElementById("positionSelect").value;
-      const color = document.getElementById("colorPicker").value;
-      const fontSize = document.getElementById("fontSize").value;
 
-      ctx.font = `${fontSize}px 'Noto Sans Devanagari', Arial`;
+      ctx.font = `${fontSize}px Arial`;
       ctx.fillStyle = color;
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 2;
       ctx.textAlign = "center";
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 2;
 
       const x = canvas.width / 2;
-      const y = position === "top" ? 80 : canvas.height - 60;
+      const y = position === "top" ? 60 : canvas.height - 30;
 
       ctx.strokeText(text, x, y);
       ctx.fillText(text, x, y);
 
-      const outputImage = document.getElementById("outputImage");
-      outputImage.src = canvas.toDataURL("image/png");
-      outputImage.style.display = "block";
+      const output = document.getElementById("outputImage");
+      output.src = canvas.toDataURL();
+      output.style.display = "block";
     };
     img.src = event.target.result;
   };
@@ -84,22 +85,22 @@ function generateImage() {
 }
 
 function downloadImage() {
-  const outputImage = document.getElementById("outputImage");
-  if (!outputImage.src) return alert("पहले इमेज बनाएं!");
+  const output = document.getElementById("outputImage");
+  if (!output.src) return alert("पहले इमेज बनाएं!");
 
   const link = document.createElement("a");
-  link.href = outputImage.src;
-  link.download = "shayari-image.png";
+  link.download = "shayari-photo.png";
+  link.href = output.src;
   link.click();
 }
 
-function shareOnWhatsApp() {
-  const outputImage = document.getElementById("outputImage");
-  if (!outputImage.src) return alert("पहले इमेज बनाएं!");
-
-  const msg = encodeURIComponent(
-    "मैंने Shayari इमेज बनाई, आप भी बनाएं:\nhttps://ms9090909.github.io/photo-pe-naam/"
-  );
-  const link = `https://wa.me/?text=${msg}`;
-  window.open(link, "_blank");
+function shareWhatsApp() {
+  const msg = encodeURIComponent("मैंने फोटो पर शायरी बनाई! आप भी बनाएं:\nhttps://myshaadistyle.blogspot.com");
+  window.open(`https://wa.me/?text=${msg}`, "_blank");
 }
+
+function shareFacebook() {
+  const url = encodeURIComponent("https://myshaadistyle.blogspot.com");
+  const shareText = encodeURIComponent("फोटो पर शायरी बनाओ और शेयर करो!");
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${shareText}`, "_blank");
+        }
