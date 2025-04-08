@@ -1,62 +1,78 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PhotoPeNaam - Happy Shayari</title>
-  <meta name="description" content="Photo पे शायरी लिखो और Download करो।">
-  <link rel="stylesheet" href="style.css" />
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Par Shayari</title>
+  <meta name="description" content="Create beautiful Shayari on photos. Add text, choose style, and share!">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts for Hindi -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
+  <!-- AdSense Banner -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <!-- Top Ad -->
+  <!-- Ad Banner Top -->
   <div class="ad-banner">
     <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-1889157785342853"
-         data-ad-slot="9768900572"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+      style="display:block"
+      data-ad-client="ca-app-pub-1889157785342853~8890571783"
+      data-ad-slot="9768900572"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <div class="wrapper">
-    <h1>PhotoPeNaam</h1>
-    <p>फोटो पर Happy Birthday शायरी लिखें</p>
+  <h1>Photo पर Shayari बनाएं</h1>
 
-    <input type="file" id="imageUpload" accept="image/*" />
+  <div class="container">
+    <label>फोटो अपलोड करें:</label>
+    <input type="file" id="imageUpload" accept="image/*">
 
-    <textarea id="shayariText">जन्मदिन मुबारक हो! आपकी जिंदगी खुशियों से भरी हो।</textarea>
+    <label>श्रेणी चुनें:</label>
+    <select id="categorySelect" onchange="updateShayariOptions()"></select>
 
-    <label>रंग चुनें:</label>
-    <input type="color" id="colorPicker" value="#ffffff" />
+    <label>शायरी चुनें:</label>
+    <select id="shayariSelect" onchange="fillShayari()">
+      <option value="">-- शायरी चुनें --</option>
+    </select>
 
-    <label>शायरी पोजीशन:</label>
+    <label>या अपनी शायरी लिखें:</label>
+    <textarea id="shayariText" rows="3" placeholder="अपनी शायरी यहां लिखें..."></textarea>
+
+    <label>शायरी की पोजिशन:</label>
     <select id="positionSelect">
       <option value="top">ऊपर</option>
       <option value="bottom">नीचे</option>
     </select>
 
-    <button onclick="generateImage()">Generate</button>
-    <button onclick="downloadImage()">Download</button>
+    <label>शायरी रंग:</label>
+    <input type="color" id="colorPicker" value="#ffffff">
 
-    <div class="share-btns">
-      <button onclick="shareWhatsApp()">WhatsApp</button>
-    </div>
+    <label>फॉन्ट साइज:</label>
+    <input type="range" id="fontSize" min="20" max="70" value="40">
 
+    <button onclick="generateImage()">Image बनाएं</button>
     <canvas id="canvas" style="display:none;"></canvas>
-    <img id="outputImage" />
+    <img id="outputImage" style="display:none;" alt="Generated Image">
+
+    <div class="actions">
+      <button onclick="downloadImage()">डाउनलोड करें</button>
+      <button onclick="shareOnWhatsApp()">WhatsApp पर शेयर करें</button>
+      <button onclick="shareFacebook()">Facebook पर शेयर करें</button>
+      <button onclick="shareInstagram()">Instagram शेयर गाइड</button>
+    </div>
   </div>
 
-  <!-- Bottom Ad -->
+  <!-- Ad Footer -->
   <div class="ad-banner">
     <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-1889157785342853"
-         data-ad-slot="9768900572"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+      style="display:block"
+      data-ad-client="ca-app-pub-1889157785342853~8890571783"
+      data-ad-slot="9768900572"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
