@@ -3,77 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="शायरी फोटो जनरेटर - हिंदी में जनमदिन, प्यार, दोस्ती, उदासी और भी शायरी लिखें अपनी फोटो पर।"/>
-  <meta name="keywords" content="Shayari on image, Birthday Shayari, Hindi Shayari Generator, Hindi Status Maker"/>
-  <meta name="author" content="PhotoPeShayari.in"/>
-  <title>Shayari Likho Photo Pe</title>
+  <title>PhotoPeNaam - शायरी इमेज जनरेटर</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="adsense.js" defer></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
-  <header>
-    <h1>शायरी लिखो अपनी फोटो पर</h1>
-    <p>अपनी तस्वीरों पर भावनाओं की स्याही</p>
-  </header>
-
-  <!-- Top Ad -->
-  <div class="ad ad-top">
+  <!-- Banner Ad -->
+  <div class="ad-banner">
     <ins class="adsbygoogle"
          style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
+         data-ad-client="ca-pub-1889157785342853"
+         data-ad-slot="9768900572"
          data-ad-format="auto"
          data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <!-- Control Panel -->
-  <section class="controls">
-    <label>तस्वीर चुनें:</label><br/>
-    <input type="file" id="imageInput" accept="image/*" /><br/>
-<button onclick="useCustomShayari()">✍️ मेरी शायरी लगाओ</button>
-    <button onclick="downloadImage()">⬇️ इमेज डाउनलोड करें</button>
-    <label>श्रेणी चुनें:</label><br/>
-    <select id="categorySelect">
-      <option value="birthday">🎂 जन्मदिन</option>
-      <option value="love">❤️ प्यार</option>
-      <option value="sad">😢 उदासी</option>
-      <option value="friendship">🤝 दोस्ती</option>
-      <option value="cute">✨ प्यारी बात</option>
-      <option value="custom">✍️ अपनी शायरी</option>
-    </select><br/>
+  <div class="wrapper">
+    <h1>PhotoPeNaam</h1>
+    <p>अपनी फोटो पर शायरी लगाएं और शेयर करें</p>
 
-    <label>शायरी लिखें:</label><br/>
-    <textarea id="shayariText" placeholder="यहाँ अपनी शायरी लिखें..."></textarea><br/>
+    <input type="file" id="imageUpload" accept="image/*" />
 
-    <label>स्थिति:</label>
+    <!-- Shayari Category + Shayari Select -->
+    <select id="categorySelect" onchange="updateShayariOptions()">
+      <option value="">-- कैटेगरी चुनें --</option>
+    </select>
+
+    <select id="shayariSelect" onchange="fillShayari()">
+      <option value="">-- शायरी चुनें --</option>
+    </select>
+
+    <textarea id="shayariText" placeholder="यहां शायरी लिखें..."></textarea>
+
     <select id="positionSelect">
       <option value="top">ऊपर</option>
       <option value="bottom">नीचे</option>
-    </select><br/>
+    </select>
 
     <button onclick="generateImage()">शायरी लगाओ</button>
-  </section>
+    <button onclick="downloadImage()">⬇️ डाउनलोड</button>
+    <button onclick="shareOnWhatsApp()">WhatsApp शेयर</button>
 
-  <canvas id="shayariCanvas" width="400" height="400"></canvas>
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="outputImage" src="" alt="Generated Image" />
 
-  <!-- Share Button -->
-  <section class="share-section">
-    <button onclick="shareImage()">शेयर करो</button>
-  </section>
-
-  <!-- Bottom Ad -->
-  <div class="ad ad-bottom">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-XXXXXXXXXXXX"
-         data-ad-slot="XXXXXXXXXX"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
+    <!-- Simulated Interstitial Modal -->
+    <div id="interstitialModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeAd()">&times;</span>
+        <h2>Sponsored</h2>
+        <ins class="adsbygoogle"
+             style="display:block"
+             data-ad-client="ca-pub-1889157785342853"
+             data-ad-slot="9768900572"
+             data-ad-format="auto"></ins>
+        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+      </div>
+    </div>
   </div>
-
-  <footer>
-    <p>© 2025 PhotoPeShayari.in | तस्वीर पर दिल से शायरी</p>
-  </footer>
 
   <script src="script.js"></script>
 </body>
