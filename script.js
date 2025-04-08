@@ -1,101 +1,77 @@
-let selectedImage = null;
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-
-document.getElementById("imageUpload").addEventListener("change", function (e) {
-  const reader = new FileReader();
-  reader.onload = function (event) {
-    const img = new Image();
-    img.onload = function () {
-      canvas.width = img.width;
-      canvas.height = img.height;
-      ctx.drawImage(img, 0, 0);
-      selectedImage = img;
-    };
-    img.src = event.target.result;
-  };
-  reader.readAsDataURL(e.target.files[0]);
-});
-
-function updateShayariOptions() {
-  const category = document.getElementById("categorySelect").value;
-  const shayariSelect = document.getElementById("shayariSelect");
-  shayariSelect.innerHTML = "";
-
-  const shayaris = {
-    "romantic": ["तेरा नाम लूं जुबां से...", "तू मिले या ना मिले..."],
-    "sad": ["दर्द ही मेरा नसीब है...", "आंसुओं से भरी ये ज़िन्दगी..."],
-    "motivational": ["जो सपना देखा है उसे पूरा कर...", "हार मत मान, चल पड़..."]
-  };
-
-  if (shayaris[category]) {
-    shayaris[category].forEach(text => {
-      const option = document.createElement("option");
-      option.value = text;
-      option.textContent = text;
-      shayariSelect.appendChild(option);
-    });
-  }
+body {
+  font-family: 'Noto Sans Devanagari', sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
+  text-align: center;
+  padding: 20px;
 }
 
-function fillShayari() {
-  const selected = document.getElementById("shayariSelect").value;
-  document.getElementById("shayariText").value = selected;
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
-function generateImage() {
-  if (!selectedImage) return alert("पहले फोटो अपलोड करें");
-
-  ctx.drawImage(selectedImage, 0, 0);
-  const text = document.getElementById("shayariText").value;
-  const position = document.getElementById("positionSelect").value;
-  const color = document.getElementById("colorPicker").value;
-  const fontSize = document.getElementById("fontSize").value;
-
-  ctx.fillStyle = color;
-  ctx.font = `${fontSize}px 'Noto Sans Devanagari'`;
-  ctx.textAlign = "center";
-
-  const x = canvas.width / 2;
-  const y = position === "top" ? fontSize : canvas.height - 30;
-
-  const lines = text.split("\n");
-  lines.forEach((line, i) => {
-    ctx.fillText(line, x, y + i * (parseInt(fontSize) + 10));
-  });
-
-  const outputImg = document.getElementById("outputImage");
-  outputImg.src = canvas.toDataURL("image/png");
-  outputImg.style.display = "block";
-
-  document.getElementById("shareOptions").style.display = "flex";
+h1 {
+  margin-bottom: 20px;
+  color: #222;
 }
 
-function downloadImage() {
-  const a = document.createElement("a");
-  a.href = canvas.toDataURL("image/png");
-  a.download = "shayari-image.png";
-  a.click();
+.section {
+  margin-bottom: 15px;
 }
 
-function share(platform) {
-  canvas.toBlob(blob => {
-    const file = new File([blob], "shayari.png", { type: "image/png" });
+.section label {
+  margin-right: 10px;
+  font-weight: bold;
+}
 
-    if (platform === "whatsapp") {
-      const shareData = {
-        files: [file],
-        title: "Shayari Image",
-        text: "देखो मेरी बनाई हुई शायरी!",
-      };
+textarea {
+  width: 100%;
+  height: 80px;
+  margin-top: 10px;
+  resize: none;
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
 
-      if (navigator.canShare && navigator.canShare(shareData)) {
-        navigator.share(shareData).catch(console.error);
-      } else {
-        alert("इस डिवाइस पर शेयर सपोर्ट नहीं करता");
-      }
-    } else {
-      alert(`${platform} के लिए अलग शेयर विकल्प जल्द आएगा!`);
-    }
-  });
+input[type="file"],
+select,
+input[type="color"],
+input[type="range"],
+button {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #999;
+}
+
+button {
+  cursor: pointer;
+  background-color: #007BFF;
+  color: white;
+  margin: 5px;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.row {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+img#outputImage {
+  margin-top: 20px;
+  max-width: 100%;
+  border: 2px solid #666;
+  border-radius: 5px;
 }
