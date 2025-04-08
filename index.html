@@ -1,66 +1,64 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="फोटो पर शायरी लिखें और डाउनलोड करें - Shayari Image Maker" />
-  <title>Photo Pe Naam - Shayari Maker</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Photo Par Naam Shayari Creator - Add Shayari, Wishes, Emojis to Your Image. Download or Share Instantly!">
+  <title>Photo Pe Naam - Shayari Creator</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- Banner Ad Placeholder -->
-  <div class="ad-banner">
-    <!-- Google AdSense Code (replace with actual when live) -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-app-pub-1889157785342853"
-         data-ad-slot="9768900572"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <header>
+    <h1>Photo पर शायरी लिखें</h1>
+  </header>
 
-  <div class="container">
-    <h1>फोटो पर शायरी लगाएं</h1>
+  <!-- Ad Placeholder (You replace this with your AdSense code) -->
+  <div class="ad-banner">[Ad Banner]</div>
 
-    <input type="file" id="imageUpload" accept="image/*" />
-    <canvas id="canvas"></canvas>
-    <img id="outputImage" style="display:none" />
+  <section class="main-container">
 
+    <input type="file" id="imageUpload" accept="image/*">
+    
     <div class="controls">
-      <label>शायरी कैटेगरी:</label>
-      <select id="categorySelect" onchange="updateShayariOptions()">
-        <option value="">कैटेगरी चुनें</option>
-      </select>
+      <label>शायरी कैटेगरी</label>
+      <select id="categorySelect" onchange="updateShayariOptions()"></select>
 
-      <label>शायरी चुनें:</label>
+      <label>शायरी चुनें</label>
       <select id="shayariSelect" onchange="fillShayari()">
-        <option value="">-- शायरी --</option>
+        <option>-- शायरी चुनें --</option>
       </select>
 
-      <label>या अपनी शायरी लिखें:</label>
-      <textarea id="shayariText" placeholder="अपनी शायरी यहां लिखें..."></textarea>
+      <textarea id="shayariText" rows="3" placeholder="अपनी शायरी लिखें..."></textarea>
 
-      <div class="row">
-        <label>पोजिशन:</label>
-        <select id="positionSelect">
-          <option value="top">ऊपर</option>
-          <option value="bottom">नीचे</option>
-        </select>
+      <label>स्थिति:</label>
+      <select id="positionSelect">
+        <option value="top">ऊपर</option>
+        <option value="bottom">नीचे</option>
+      </select>
 
-        <label>रंग:</label>
-        <input type="color" id="colorPicker" value="#ffffff" />
+      <label>रंग:</label>
+      <input type="color" id="colorPicker" value="#ffffff">
 
-        <label>साइज:</label>
-        <input type="range" id="fontSize" min="20" max="80" value="40" />
-      </div>
+      <label>फ़ॉन्ट साइज:</label>
+      <input type="range" id="fontSize" min="20" max="60" value="40">
 
       <button onclick="generateImage()">इमेज बनाएं</button>
-      <button onclick="downloadImage()">डाउनलोड</button>
-      <button onclick="shareOnWhatsApp()">WhatsApp पर शेयर करें</button>
     </div>
-  </div>
+
+    <canvas id="canvas" style="display:none;"></canvas>
+    <img id="outputImage" alt="Output" style="display:none;" />
+
+    <div class="button-group">
+      <button onclick="downloadImage()">डाउनलोड</button>
+      <button onclick="shareWhatsApp()">WhatsApp पर शेयर</button>
+      <button onclick="shareFacebook()">Facebook</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>Made with ❤️ by Ninja | Ad supported</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
