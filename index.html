@@ -1,54 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Shayari Creator Ninja Mode</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Pe Naam | शायरी फोटो मेकर</title>
+  <meta name="description" content="Create beautiful Shayari images with your photo. Add Hindi Shayari, stickers, and share directly to WhatsApp or download.">
+  <link rel="stylesheet" href="style.css" />
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXX"></script>
+  <!-- AdSense -->
+  <script data-ad-client="ca-app-pub-1889157785342853~8890571783" async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 </head>
 <body>
-  <header>
-    <h1>Shayari Pe Naam</h1>
-  </header>
+  <!-- Header Banner Ad -->
+  <div class="ad-container">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-app-pub-1889157785342853"
+         data-ad-slot="9768900572"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
-  <main>
-    <div class="canvas-section">
-      <canvas id="imageCanvas"></canvas>
-    </div>
+  <div class="container">
+    <h1>Photo Pe Naam</h1>
+    <p>अपनी फोटो पर शायरी लगाएं और शेयर करें!</p>
+
+    <input type="file" id="imageUpload" accept="image/*" />
+    <canvas id="canvas"></canvas>
+    <img id="outputImage" style="display: none" />
 
     <div class="controls">
-      <input type="file" id="imageUpload" accept="image/*" />
-      
-      <select id="shayariSelect">
-        <option value="">Choose Shayari</option>
-        <option>तू सामने हो ये जरूरी नहीं, तेरे साथ होना जरूरी है।</option>
-        <option>मुस्कुराहट एक शायरी है, जो हर चेहरे पे सजती है।</option>
-        <option>तेरी यादों का मौसम हमेशा मेरे आसपास रहता है।</option>
-        <!-- Add more shayaris here -->
+      <label>शायरी कैटेगरी:</label>
+      <select id="categorySelect" onchange="updateShayariOptions()">
+        <option value="">-- Select Category --</option>
       </select>
 
-      <select id="fontSizeSelect">
-        <option value="24">Small</option>
-        <option value="32">Medium</option>
-        <option value="40">Large</option>
+      <label>शायरी चुनें:</label>
+      <select id="shayariSelect" onchange="fillShayari()">
+        <option value="">-- Select Shayari --</option>
       </select>
 
-      <select id="colorSelect">
-        <option value="#ffffff">White</option>
-        <option value="#000000">Black</option>
-        <option value="#ff4081">Pink</option>
-        <option value="#00e676">Green</option>
-        <option value="#2196f3">Blue</option>
+      <label>या खुद लिखें:</label>
+      <textarea id="shayariText" placeholder="यहां शायरी लिखें..."></textarea>
+
+      <label>टेक्स्ट पोजिशन:</label>
+      <select id="positionSelect">
+        <option value="top">ऊपर</option>
+        <option value="bottom">नीचे</option>
       </select>
 
-      <button onclick="downloadImage()">Download</button>
-      <button onclick="shareImage()">Share on WhatsApp</button>
+      <label>रंग:</label>
+      <input type="color" id="colorPicker" value="#ffffff" />
+
+      <label>Font Size:</label>
+      <input type="range" id="fontSize" min="20" max="60" value="40" />
+
+      <button onclick="generateImage()">शायरी लगाएं</button>
+      <button onclick="downloadImage()">डाउनलोड करें</button>
+      <button onclick="shareWhatsApp()">व्हाट्सएप पर शेयर</button>
+      <button onclick="shareFacebook()">Facebook</button>
+      <button onclick="shareInstagram()">Instagram</button>
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <div class="ad-banner">[Ad Banner Here]</div>
-  </footer>
+  <!-- Footer Banner Ad -->
+  <div class="ad-container bottom">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-app-pub-1889157785342853"
+         data-ad-slot="9768900572"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 
   <script src="script.js"></script>
 </body>
