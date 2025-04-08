@@ -1,77 +1,76 @@
 body {
+  margin: 0;
   font-family: 'Noto Sans Devanagari', sans-serif;
-  background-color: #f2f2f2;
-  color: #333;
-  text-align: center;
-  padding: 20px;
+  background: #f9f9f9;
+  color: #222;
 }
 
 .container {
   max-width: 600px;
   margin: auto;
-  background: #fff;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
 h1 {
-  margin-bottom: 20px;
-  color: #222;
+  text-align: center;
+  color: #c62828;
 }
 
-.section {
-  margin-bottom: 15px;
+canvas {
+  width: 100%;
+  margin-top: 20px;
+  border: 2px dashed #ccc;
 }
 
-.section label {
-  margin-right: 10px;
+.controls {
+  margin-top: 20px;
+}
+
+.controls label {
+  display: block;
+  margin-top: 10px;
   font-weight: bold;
 }
 
-textarea {
+select, textarea, input[type="file"], input[type="color"], input[type="range"] {
   width: 100%;
-  height: 80px;
-  margin-top: 10px;
-  resize: none;
-  font-size: 16px;
-  padding: 10px;
-  border: 1px solid #ccc;
-}
-
-input[type="file"],
-select,
-input[type="color"],
-input[type="range"],
-button {
-  margin-top: 10px;
   padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #999;
+  margin-top: 5px;
+}
+
+textarea {
+  height: 60px;
+  resize: none;
 }
 
 button {
-  cursor: pointer;
-  background-color: #007BFF;
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  font-size: 16px;
+  background: #2e7d32;
   color: white;
-  margin: 5px;
   border: none;
-  transition: background 0.3s ease;
+  cursor: pointer;
 }
 
 button:hover {
-  background-color: #0056b3;
+  background: #1b5e20;
 }
 
 .row {
   display: flex;
-  justify-content: space-around;
   flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
 }
 
-img#outputImage {
-  margin-top: 20px;
-  max-width: 100%;
-  border: 2px solid #666;
-  border-radius: 5px;
+.row > * {
+  flex: 1;
 }
+
+.ad-banner {
+  margin: 10px auto;
+  max-width: 100%;
+  text-align: center;
+  }
