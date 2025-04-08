@@ -1,51 +1,66 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <title>Shayari Image Maker</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Noto Sans Devanagari', sans-serif; text-align: center; padding: 20px; }
-    select, textarea, input { margin: 10px; padding: 8px; }
-    #outputImage { display: none; max-width: 100%; margin-top: 20px; }
-    #shareOptions { display: none; flex-direction: column; gap: 10px; margin-top: 20px; }
-  </style>
+  <meta charset="UTF-8">
+  <title>Photo पर Shayari बनाएं</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="container">
+    <h1>Photo पर Shayari बनाएं</h1>
 
-  <h2>Photo पर Shayari बनाएं</h2>
+    <div class="section">
+      <label>फोटो अपलोड करें:</label>
+      <input type="file" id="imageUpload">
+    </div>
 
-  <input type="file" id="imageUpload"><br>
-  <label>श्रेणी चुनें:</label>
-  <select id="categorySelect" onchange="updateShayariOptions()"></select><br>
+    <div class="section">
+      <label>श्रेणी चुनें:</label>
+      <select id="categorySelect" onchange="updateShayariOptions()">
+        <option value="">-- चुनें --</option>
+        <option value="romantic">रोमांटिक</option>
+        <option value="sad">दुख भरी</option>
+        <option value="motivational">प्रेरणादायक</option>
+      </select>
+    </div>
 
-  <select id="shayariSelect" onchange="fillShayari()"></select>
-  <textarea id="shayariText" rows="3" cols="30" placeholder="शायरी लिखें..."></textarea><br>
+    <div class="section">
+      <label>चुनें:</label>
+      <select id="shayariSelect" onchange="fillShayari()">
+        <option value="">-- शायरी चुनें --</option>
+      </select>
+      <textarea id="shayariText" placeholder="या अपनी शायरी लिखें..."></textarea>
+    </div>
 
-  <label>पोजीशन:</label>
-  <select id="positionSelect">
-    <option value="top">ऊपर</option>
-    <option value="bottom">नीचे</option>
-  </select>
+    <div class="section row">
+      <label>पोज़ीशन:</label>
+      <select id="positionSelect">
+        <option value="top">ऊपर</option>
+        <option value="bottom">नीचे</option>
+      </select>
 
-  <label>शायरी रंग:</label>
-  <input type="color" id="colorPicker">
+      <label>शायरी रंग:</label>
+      <input type="color" id="colorPicker" value="#000000">
 
-  <label>फॉन्ट साइज:</label>
-  <input type="range" id="fontSize" min="20" max="80" value="40"><br>
+      <label>फॉन्ट साइज:</label>
+      <input type="range" id="fontSize" min="20" max="60" value="32">
+    </div>
 
-  <button onclick="generateImage()">Image बनाएं</button>
+    <div class="section">
+      <button onclick="generateImage()">Image बनाएं</button>
+      <button onclick="downloadImage()">डाउनलोड करें</button>
+    </div>
 
-  <div id="shareOptions">
-    <button onclick="downloadImage()">डाउनलोड करें</button>
-    <button onclick="share('whatsapp')">WhatsApp पर शेयर करें</button>
-    <button onclick="share('facebook')">Facebook पर शेयर करें</button>
-    <button onclick="share('instagram')">Instagram शेयर गाइड</button>
+    <div class="section" id="shareOptions" style="display:none;">
+      <button onclick="share('whatsapp')">WhatsApp पर शेयर करें</button>
+      <button disabled>Facebook पर शेयर करें</button>
+      <button disabled>Instagram शेयर गाइड</button>
+    </div>
+
+    <img id="outputImage" style="display:none;" />
+    <canvas id="canvas" style="display:none;"></canvas>
   </div>
-
-  <canvas id="canvas" style="display:none;"></canvas>
-  <img id="outputImage" />
 
   <script src="script.js"></script>
 </body>
-</html>
+      </html>
