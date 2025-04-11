@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
   <title>Photo Pe Naam | शायरी फोटो मेकर</title>
   <meta name="description" content="Create beautiful Shayari images with your photo. Add Hindi Shayari, stickers, and share directly to WhatsApp or download.">
   
@@ -32,6 +32,7 @@
       padding: 0;
       color: #333;
       line-height: 1.6;
+      touch-action: none;
     }
     
     .container {
@@ -78,14 +79,10 @@
       font-size: 1rem;
     }
     
-    .upload-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px rgba(108, 99, 255, 0.3);
-    }
-    
     .preview-area {
       margin: 20px 0;
       position: relative;
+      touch-action: none;
     }
     
     canvas, #outputImage {
@@ -94,6 +91,22 @@
       box-shadow: var(--shadow);
       display: block;
       margin: 0 auto;
+      touch-action: none;
+    }
+    
+    #shayari-overlay {
+      position: absolute;
+      color: white;
+      font-size: 24px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      padding: 10px;
+      touch-action: none;
+      user-select: none;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      max-width: 90%;
+      text-align: center;
     }
     
     .controls {
@@ -168,18 +181,6 @@
       color: white;
     }
     
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .ad-container {
-      margin: 20px 0;
-      padding: 10px;
-      background: white;
-      border-radius: 8px;
-    }
-    
     @media (max-width: 600px) {
       .container {
         padding: 15px;
@@ -196,17 +197,6 @@
   </style>
 </head>
 <body>
-  <!-- Header Banner Ad -->
-  <div class="ad-container">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-app-pub-1889157785342853"
-         data-ad-slot="9768900572"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
   <div class="container">
     <header>
       <h1>Photo Pe Naam</h1>
@@ -222,39 +212,14 @@
       <div class="preview-area">
         <canvas id="canvas"></canvas>
         <img id="outputImage" style="display: none" />
+        <div id="shayari-overlay">अपनी शायरी यहाँ दिखाई देगी</div>
       </div>
     </div>
 
     <div class="controls">
       <div class="form-group">
-        <label for="categorySelect">शायरी कैटेगरी:</label>
-        <select id="categorySelect" onchange="updateShayariOptions()">
-          <option value="">-- कैटेगरी चुनें --</option>
-          <option value="love">प्यार</option>
-          <option value="sad">दर्द</option>
-          <option value="friendship">दोस्ती</option>
-          <option value="motivational">प्रेरणा</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="shayariSelect">शायरी चुनें:</label>
-        <select id="shayariSelect" onchange="fillShayari()">
-          <option value="">-- शायरी चुनें --</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="shayariText">या खुद लिखें:</label>
+        <label for="shayariText">अपनी शायरी लिखें:</label>
         <textarea id="shayariText" placeholder="यहां अपनी शायरी लिखें..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="positionSelect">टेक्स्ट पोजिशन:</label>
-        <select id="positionSelect">
-          <option value="top">ऊपर</option>
-          <option value="bottom">नीचे</option>
-        </select>
       </div>
 
       <div class="form-group">
@@ -263,105 +228,27 @@
       </div>
 
       <div class="form-group">
-        <label for="fontSize">फॉन्ट साइज: <span id="fontSizeValue">40</span>px</label>
-        <input type="range" id="fontSize" min="20" max="60" value="40" oninput="document.getElementById('fontSizeValue').textContent = this.value" />
+        <label for="fontSize">फॉन्ट साइज: <span id="fontSizeValue">24</span>px</label>
+        <input type="range" id="fontSize" min="16" max="72" value="24" oninput="updateFontSize(this.value)" />
       </div>
 
       <div class="btn-group">
-        <button class="btn btn-primary" onclick="generateImage()">
-          <i class="fas fa-magic"></i> शायरी लगाएं
+        <button class="btn btn-primary" onclick="updateShayari()">
+          <i class="fas fa-magic"></i> शायरी अपडेट करें
         </button>
         <button class="btn btn-primary" onclick="downloadImage()">
           <i class="fas fa-download"></i> डाउनलोड
-        </button>
-        <button class="btn btn-whatsapp" onclick="shareWhatsApp()">
-          <i class="fab fa-whatsapp"></i> व्हाट्सएप
-        </button>
-        <button class="btn btn-facebook" onclick="shareFacebook()">
-          <i class="fab fa-facebook-f"></i> Facebook
-        </button>
-        <button class="btn btn-instagram" onclick="shareInstagram()">
-          <i class="fab fa-instagram"></i> Instagram
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Footer Banner Ad -->
-  <div class="ad-container bottom">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-app-pub-1889157785342853"
-         data-ad-slot="9768900572"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Shayari Editor</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 20px;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      touch-action: none;
-    }
-    
-    #canvas-container {
-      position: relative;
-      width: 100%;
-      height: 300px;
-      background: #eee;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-    
-    #shayari-text {
-      position: absolute;
-      color: white;
-      font-size: 24px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
-      padding: 10px;
-      touch-action: none;
-      user-select: none;
-      transform: translate(-50%, -50%);
-      left: 50%;
-      top: 50%;
-    }
-    
-    #text-input {
-      width: 100%;
-      height: 100px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-    
-    button {
-      padding: 10px 15px;
-      background: #6c63ff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-    }
-  </style>
-</head>
-<body>
-  <div id="canvas-container">
-    <div id="shayari-text">अपनी शायरी यहाँ लिखें</div>
-  </div>
-  
-  <textarea id="text-input" placeholder="अपनी शायरी यहाँ लिखें..."></textarea>
-  <button onclick="updateText()">अपडेट करें</button>
-
   <script>
-    const textElement = document.getElementById('shayari-text');
-    const textInput = document.getElementById('text-input');
+    // Shayari text element
+    const shayariOverlay = document.getElementById('shayari-overlay');
+    const shayariText = document.getElementById('shayariText');
+    const colorPicker = document.getElementById('colorPicker');
+    const fontSizeInput = document.getElementById('fontSize');
     
     // Initialize variables for touch handling
     let isDragging = false;
@@ -370,13 +257,20 @@
     let initialDistance = null;
     let currentX = 50, currentY = 50; // Starting position (percentage)
 
-    // Update text content
-    function updateText() {
-      textElement.textContent = textInput.value || "अपनी शायरी यहाँ लिखें";
+    // Update shayari text
+    function updateShayari() {
+      shayariOverlay.textContent = shayariText.value || "अपनी शायरी यहाँ दिखाई देगी";
+      shayariOverlay.style.color = colorPicker.value;
+    }
+    
+    // Update font size
+    function updateFontSize(size) {
+      document.getElementById('fontSizeValue').textContent = size;
+      shayariOverlay.style.fontSize = size + 'px';
     }
 
     // Touch start handler
-    textElement.addEventListener('touchstart', (e) => {
+    shayariOverlay.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
         // Single touch - prepare for dragging
         isDragging = true;
@@ -385,12 +279,12 @@
       } else if (e.touches.length === 2) {
         // Two touches - prepare for pinch zoom
         initialDistance = getDistance(e.touches[0], e.touches[1]);
-        startFontSize = parseInt(window.getComputedStyle(textElement).fontSize);
+        startFontSize = parseInt(window.getComputedStyle(shayariOverlay).fontSize);
       }
     });
 
     // Touch move handler
-    textElement.addEventListener('touchmove', (e) => {
+    shayariOverlay.addEventListener('touchmove', (e) => {
       e.preventDefault();
       
       if (isDragging && e.touches.length === 1) {
@@ -402,11 +296,11 @@
         currentY += (dy / window.innerHeight) * 100;
         
         // Limit movement to container bounds
-        currentX = Math.max(0, Math.min(100, currentX));
-        currentY = Math.max(0, Math.min(100, currentY));
+        currentX = Math.max(5, Math.min(95, currentX));
+        currentY = Math.max(5, Math.min(95, currentY));
         
-        textElement.style.left = currentX + '%';
-        textElement.style.top = currentY + '%';
+        shayariOverlay.style.left = currentX + '%';
+        shayariOverlay.style.top = currentY + '%';
         
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
@@ -417,13 +311,15 @@
         if (initialDistance !== null) {
           const scale = currentDistance / initialDistance;
           const newSize = Math.max(16, Math.min(72, startFontSize * scale));
-          textElement.style.fontSize = newSize + 'px';
+          shayariOverlay.style.fontSize = newSize + 'px';
+          fontSizeInput.value = newSize;
+          document.getElementById('fontSizeValue').textContent = newSize;
         }
       }
     });
 
     // Touch end handler
-    textElement.addEventListener('touchend', () => {
+    shayariOverlay.addEventListener('touchend', () => {
       isDragging = false;
       initialDistance = null;
     });
@@ -436,9 +332,8 @@
       );
     }
 
-    // Initialize text position
-    textElement.style.left = '50%';
-    textElement.style.top = '50%';
+    // Initialize
+    updateShayari();
   </script>
 </body>
-</html>
+  </html>
