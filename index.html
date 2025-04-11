@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <!-- Google Fonts for Hindi text -->
-  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   
   <style>
     :root {
@@ -23,7 +23,7 @@
     
     * {
       box-sizing: border-box;
-      font-family: 'Hind Siliguri', sans-serif;
+      font-family: 'Hind Siliguri', 'Poppins', sans-serif;
     }
     
     body {
@@ -32,6 +32,7 @@
       padding: 0;
       color: #333;
       line-height: 1.6;
+      touch-action: manipulation;
     }
     
     .container {
@@ -78,14 +79,10 @@
       font-size: 1rem;
     }
     
-    .upload-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 15px rgba(108, 99, 255, 0.3);
-    }
-    
     .preview-area {
       margin: 20px 0;
       position: relative;
+      touch-action: none;
     }
     
     canvas, #outputImage {
@@ -94,210 +91,198 @@
       box-shadow: var(--shadow);
       display: block;
       margin: 0 auto;
+      touch-action: none;
+      user-select: none;
     }
     
-    .controls {
-      background: white;
-      border-radius: 12px;
-      padding: 25px;
-      box-shadow: var(--shadow);
-    }
-    
-    .form-group {
-      margin-bottom: 20px;
-    }
-    
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-    
-    select, textarea, input[type="color"], input[type="range"] {
-      width: 100%;
-      padding: 10px 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      font-size: 1rem;
-    }
-    
-    textarea {
-      min-height: 100px;
-      resize: vertical;
-    }
-    
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 25px;
-    }
-    
-    .btn {
-      padding: 12px 20px;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s;
-      flex: 1;
-      min-width: 150px;
-      justify-content: center;
-    }
-    
-    .btn-primary {
-      background: var(--primary);
+    .text-overlay {
+      position: absolute;
       color: white;
-    }
-    
-    .btn-whatsapp {
-      background: var(--whatsapp);
-      color: white;
-    }
-    
-    .btn-facebook {
-      background: var(--facebook);
-      color: white;
-    }
-    
-    .btn-instagram {
-      background: var(--instagram);
-      color: white;
-    }
-    
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .ad-container {
-      margin: 20px 0;
+      font-size: 24px;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
       padding: 10px;
-      background: white;
+      cursor: move;
+      touch-action: none;
+      user-select: none;
+    }
+    
+    .advanced-controls {
+      display: none;
+      margin-top: 15px;
+      background: #f8f9fa;
+      padding: 15px;
       border-radius: 8px;
     }
     
-    @media (max-width: 600px) {
-      .container {
-        padding: 15px;
-      }
-      
-      .controls {
-        padding: 15px;
-      }
-      
-      .btn {
-        flex: 100%;
-      }
+    .btn-advanced {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
     }
+    
+    .font-style-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+    
+    .font-btn {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+    
+    .font-btn.active {
+      border-color: var(--primary);
+      background: rgba(108, 99, 255, 0.1);
+    }
+    
+    .share-link {
+      margin-top: 20px;
+    }
+    
+    .share-link input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+    
+    /* Rest of your existing CSS... */
   </style>
 </head>
 <body>
-  <!-- Header Banner Ad -->
-  <div class="ad-container">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-app-pub-1889157785342853"
-         data-ad-slot="9768900572"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
+  <!-- Your existing header and upload area... -->
 
-  <div class="container">
-    <header>
-      <h1>Photo Pe Naam</h1>
-      <p>अपनी फोटो पर शायरी लगाएं और शेयर करें!</p>
-    </header>
-
-    <div class="upload-area">
-      <label for="imageUpload" class="upload-btn">
-        <i class="fas fa-camera"></i> फोटो चुनें
-      </label>
-      <input type="file" id="imageUpload" accept="image/*" />
+  <div class="controls">
+    <!-- Your existing form controls... -->
+    
+    <button class="btn-advanced" onclick="toggleAdvanced()">
+      <i class="fas fa-cog"></i> एडवांस्ड ऑप्शन
+    </button>
+    
+    <div class="advanced-controls" id="advancedControls">
+      <div class="form-group">
+        <label>फॉन्ट स्टाइल:</label>
+        <div class="font-style-options">
+          <div class="font-btn" onclick="changeFontStyle('Arial')" data-font="Arial">Arial</div>
+          <div class="font-btn" onclick="changeFontStyle('Times New Roman')" data-font="Times New Roman">Times</div>
+          <div class="font-btn" onclick="changeFontStyle('Courier New')" data-font="Courier New">Courier</div>
+          <div class="font-btn" onclick="changeFontStyle('Hind Siliguri')" data-font="Hind Siliguri">हिंदी</div>
+          <div class="font-btn" onclick="changeFontStyle('Poppins')" data-font="Poppins">Modern</div>
+          <div class="font-btn" onclick="changeFontStyle('cursive')" data-font="cursive">Fancy</div>
+        </div>
+      </div>
       
-      <div class="preview-area">
-        <canvas id="canvas"></canvas>
-        <img id="outputImage" style="display: none" />
+      <div class="form-group">
+        <label>टेक्स्ट इफेक्ट:</label>
+        <div>
+          <button onclick="addTextEffect('bold')"><i class="fas fa-bold"></i></button>
+          <button onclick="addTextEffect('italic')"><i class="fas fa-italic"></i></button>
+          <button onclick="addTextEffect('underline')"><i class="fas fa-underline"></i></button>
+          <button onclick="addTextShadow()"><i class="fas fa-text-shadow"></i></button>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>टेक्स्ट पोजीशन (ड्रैग करें):</label>
+        <p>फोटो पर टेक्स्ट को दो उंगलियों से घुमा या सरका सकते हैं</p>
+      </div>
+      
+      <div class="share-link">
+        <label>शेयर लिंक:</label>
+        <input type="text" id="shareLink" value="https://ms9090909.github.io/photo-pe-naam/" readonly>
+        <button onclick="copyShareLink()"><i class="fas fa-copy"></i> कॉपी करें</button>
       </div>
     </div>
-
-    <div class="controls">
-      <div class="form-group">
-        <label for="categorySelect">शायरी कैटेगरी:</label>
-        <select id="categorySelect" onchange="updateShayariOptions()">
-          <option value="">-- कैटेगरी चुनें --</option>
-          <option value="love">प्यार</option>
-          <option value="sad">दर्द</option>
-          <option value="friendship">दोस्ती</option>
-          <option value="motivational">प्रेरणा</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="shayariSelect">शायरी चुनें:</label>
-        <select id="shayariSelect" onchange="fillShayari()">
-          <option value="">-- शायरी चुनें --</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="shayariText">या खुद लिखें:</label>
-        <textarea id="shayariText" placeholder="यहां अपनी शायरी लिखें..."></textarea>
-      </div>
-
-      <div class="form-group">
-        <label for="positionSelect">टेक्स्ट पोजिशन:</label>
-        <select id="positionSelect">
-          <option value="top">ऊपर</option>
-          <option value="bottom">नीचे</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="colorPicker">रंग:</label>
-        <input type="color" id="colorPicker" value="#ffffff" />
-      </div>
-
-      <div class="form-group">
-        <label for="fontSize">फॉन्ट साइज: <span id="fontSizeValue">40</span>px</label>
-        <input type="range" id="fontSize" min="20" max="60" value="40" oninput="document.getElementById('fontSizeValue').textContent = this.value" />
-      </div>
-
-      <div class="btn-group">
-        <button class="btn btn-primary" onclick="generateImage()">
-          <i class="fas fa-magic"></i> शायरी लगाएं
-        </button>
-        <button class="btn btn-primary" onclick="downloadImage()">
-          <i class="fas fa-download"></i> डाउनलोड
-        </button>
-        <button class="btn btn-whatsapp" onclick="shareWhatsApp()">
-          <i class="fab fa-whatsapp"></i> व्हाट्सएप
-        </button>
-        <button class="btn btn-facebook" onclick="shareFacebook()">
-          <i class="fab fa-facebook-f"></i> Facebook
-        </button>
-        <button class="btn btn-instagram" onclick="shareInstagram()">
-          <i class="fab fa-instagram"></i> Instagram
-        </button>
-      </div>
-    </div>
+    
+    <!-- Your existing button group... -->
   </div>
 
-  <!-- Footer Banner Ad -->
-  <div class="ad-container bottom">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-app-pub-1889157785342853"
-         data-ad-slot="9768900572"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-          </html>
+  <script>
+    // Advanced Controls
+    function toggleAdvanced() {
+      const adv = document.getElementById('advancedControls');
+      adv.style.display = adv.style.display === 'block' ? 'none' : 'block';
+    }
+    
+    // Font Style Changer
+    function changeFontStyle(font) {
+      document.querySelectorAll('.font-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if(btn.getAttribute('data-font') === font) {
+          btn.classList.add('active');
+        }
+      });
+      // Apply font to text
+    }
+    
+    // Text Effects
+    function addTextEffect(type) {
+      // Apply effect to text
+    }
+    
+    // Share Link Copy
+    function copyShareLink() {
+      const link = document.getElementById('shareLink');
+      link.select();
+      document.execCommand('copy');
+      alert('लिंक कॉपी हो गया!');
+    }
+    
+    // Touch Controls for Text Positioning
+    let activeText = null;
+    let startX, startY;
+    
+    document.addEventListener('touchstart', function(e) {
+      if(e.target.classList.contains('text-overlay')) {
+        activeText = e.target;
+        startX = e.touches[0].clientX - activeText.offsetLeft;
+        startY = e.touches[0].clientY - activeText.offsetTop;
+      }
+    });
+    
+    document.addEventListener('touchmove', function(e) {
+      if(activeText) {
+        e.preventDefault();
+        activeText.style.left = (e.touches[0].clientX - startX) + 'px';
+        activeText.style.top = (e.touches[0].clientY - startY) + 'px';
+      }
+    });
+    
+    document.addEventListener('touchend', function() {
+      activeText = null;
+    });
+    
+    // Pinch to Zoom for Text Size
+    let initialDistance = null;
+    
+    document.addEventListener('touchstart', function(e) {
+      if(e.touches.length === 2 && e.target.classList.contains('text-overlay')) {
+        initialDistance = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+      }
+    });
+    
+    document.addEventListener('touchmove', function(e) {
+      if(e.touches.length === 2 && initialDistance !== null) {
+        const currentDistance = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        
+        const scale = currentDistance / initialDistance;
+        const fontSize = parseInt(e.target.style.fontSize || '24px');
+        e.target.style.fontSize = (fontSize * scale) + 'px';
+        initialDistance = currentDistance;
