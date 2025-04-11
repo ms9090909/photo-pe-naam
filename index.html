@@ -1,6 +1,306 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Pe Naam | शायरी फोटो मेकर</title>
+  <meta name="description" content="Create beautiful Shayari images with your photo. Add Hindi Shayari, stickers, and share directly to WhatsApp or download.">
+  
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts for Hindi text -->
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --primary: #6c63ff;
+      --whatsapp: #25D366;
+      --facebook: #1877F2;
+      --instagram: linear-gradient(45deg, #405DE6, #833AB4, #C13584);
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      font-family: 'Hind Siliguri', sans-serif;
+    }
+    
+    body {
+      background: #f5f7fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      color: var(--primary);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    
+    .upload-area {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    #imageUpload {
+      display: none;
+    }
+    
+    .upload-btn {
+      background: var(--primary);
+      color: white;
+      padding: 12px 25px;
+      border-radius: 50px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      font-size: 1rem;
+    }
+    
+    .upload-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 15px rgba(108, 99, 255, 0.3);
+    }
+    
+    .preview-area {
+      margin: 20px 0;
+      position: relative;
+    }
+    
+    canvas, #outputImage {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      display: block;
+      margin: 0 auto;
+    }
+    
+    .controls {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    
+    select, textarea, input[type="color"], input[type="range"] {
+      width: 100%;
+      padding: 10px 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .btn-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+    
+    .btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s;
+      flex: 1;
+      min-width: 150px;
+      justify-content: center;
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-whatsapp {
+      background: var(--whatsapp);
+      color: white;
+    }
+    
+    .btn-facebook {
+      background: var(--facebook);
+      color: white;
+    }
+    
+    .btn-instagram {
+      background: var(--instagram);
+      color: white;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .ad-container {
+      margin: 20px 0;
+      padding: 10px;
+      background: white;
+      border-radius: 8px;
+    }
+    
+    @media (max-width: 600px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .controls {
+        padding: 15px;
+      }
+      
+      .btn {
+        flex: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header Banner Ad -->
+  <div class="ad-container">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-app-pub-1889157785342853"
+         data-ad-slot="9768900572"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <div class="container">
+    <header>
+      <h1>Photo Pe Naam</h1>
+      <p>अपनी फोटो पर शायरी लगाएं और शेयर करें!</p>
+    </header>
+
+    <div class="upload-area">
+      <label for="imageUpload" class="upload-btn">
+        <i class="fas fa-camera"></i> फोटो चुनें
+      </label>
+      <input type="file" id="imageUpload" accept="image/*" />
+      
+      <div class="preview-area">
+        <canvas id="canvas"></canvas>
+        <img id="outputImage" style="display: none" />
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="form-group">
+        <label for="categorySelect">शायरी कैटेगरी:</label>
+        <select id="categorySelect" onchange="updateShayariOptions()">
+          <option value="">-- कैटेगरी चुनें --</option>
+          <option value="love">प्यार</option>
+          <option value="sad">दर्द</option>
+          <option value="friendship">दोस्ती</option>
+          <option value="motivational">प्रेरणा</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="shayariSelect">शायरी चुनें:</label>
+        <select id="shayariSelect" onchange="fillShayari()">
+          <option value="">-- शायरी चुनें --</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="shayariText">या खुद लिखें:</label>
+        <textarea id="shayariText" placeholder="यहां अपनी शायरी लिखें..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="positionSelect">टेक्स्ट पोजिशन:</label>
+        <select id="positionSelect">
+          <option value="top">ऊपर</option>
+          <option value="bottom">नीचे</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="colorPicker">रंग:</label>
+        <input type="color" id="colorPicker" value="#ffffff" />
+      </div>
+
+      <div class="form-group">
+        <label for="fontSize">फॉन्ट साइज: <span id="fontSizeValue">40</span>px</label>
+        <input type="range" id="fontSize" min="20" max="60" value="40" oninput="document.getElementById('fontSizeValue').textContent = this.value" />
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="generateImage()">
+          <i class="fas fa-magic"></i> शायरी लगाएं
+        </button>
+        <button class="btn btn-primary" onclick="downloadImage()">
+          <i class="fas fa-download"></i> डाउनलोड
+        </button>
+        <button class="btn btn-whatsapp" onclick="shareWhatsApp()">
+          <i class="fab fa-whatsapp"></i> व्हाट्सएप
+        </button>
+        <button class="btn btn-facebook" onclick="shareFacebook()">
+          <i class="fab fa-facebook-f"></i> Facebook
+        </button>
+        <button class="btn btn-instagram" onclick="shareInstagram()">
+          <i class="fab fa-instagram"></i> Instagram
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Banner Ad -->
+  <div class="ad-container bottom">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-app-pub-1889157785342853"
+         data-ad-slot="9768900572"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Shayari Editor</title>
