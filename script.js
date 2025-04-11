@@ -89,6 +89,59 @@ function generateImage() {
   };
   reader.readAsDataURL(file);
 }
+/* Add Font Awesome (place in <head>) */
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+/* Custom Button Styling */
+.share-buttons-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.share-btn {
+  border: none;
+  border-radius: 50px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.share-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* WhatsApp Button (Green) */
+.whatsapp-btn {
+  background: #25D366;
+  color: white;
+}
+
+/* Facebook Button (Blue) */
+.facebook-btn {
+  background: #1877F2;
+  color: white;
+}
+
+/* Instagram Button (Gradient Purple-Pink) */
+.instagram-btn {
+  background: linear-gradient(45deg, #405DE6, #833AB4, #C13584, #E1306C, #FD1D1D);
+  color: white;
+}
+
+/* Download Button (Dark Gray) */
+.download-btn {
+  background: #333;
+  color: white;
+      }
 
 function downloadImage() {
   const output = document.getElementById("outputImage");
@@ -103,24 +156,3 @@ function downloadImage() {
   link.click();
 }
 
-function shareWhatsApp() {
-  const output = document.getElementById("outputImage");
-  if (!output.src) return alert("पहले इमेज बनाएं!");
-
-  const msg = encodeURIComponent("मैंने Shayari फोटो बनाई है। देखो और ट्राय करो!");
-  const link = `https://wa.me/?text=${msg}%0A${output.src}`;
-  window.open(link, "_blank");
-}
-
-function shareFacebook() {
-  const link = "https://myshaadistyle.blogspot.com";
-  const shareText = "मैंने Shayari फोटो बनाई है। आप भी बनाओ!";
-  window.open(
-    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(link)}&quote=${encodeURIComponent(shareText)}`,
-    "_blank"
-  );
-}
-
-function shareInstagram() {
-  alert("Instagram पर डायरेक्ट इमेज शेयर नहीं हो सकता। पहले डाउनलोड करें और फिर इंस्टा पर शेयर करें।");
-      }
