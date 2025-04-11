@@ -1,158 +1,144 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-  <title>Photo Pe Naam | शायरी फोटो मेकर</title>
-  <meta name="description" content="Create beautiful Shayari images with your photo. Add Hindi Shayari, stickers, and share directly to WhatsApp or download.">
-  
-  <!-- Font Awesome for icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Shayari Editor</title>
   <style>
-    :root {
-      --primary: #6c63ff;
-      --whatsapp: #25D366;
-      --facebook: #1877F2;
-      --instagram: linear-gradient(45deg, #405DE6, #833AB4, #C13584);
-    }
-    
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
-      background: #f5f7fa;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      touch-action: none;
     }
     
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-    }
-    
-    .preview-area {
+    #canvas-container {
       position: relative;
-      margin: 20px 0;
-      touch-action: none;
+      width: 100%;
+      height: 300px;
+      background: #eee;
+      margin-bottom: 20px;
+      overflow: hidden;
     }
     
-    canvas, #outputImage {
-      max-width: 100%;
-      border-radius: 8px;
-      display: block;
-      margin: 0 auto;
-      touch-action: none;
-    }
-    
-    .text-overlay {
+    #shayari-text {
       position: absolute;
       color: white;
       font-size: 24px;
-      text-align: center;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
       padding: 10px;
       touch-action: none;
       user-select: none;
+      transform: translate(-50%, -50%);
+      left: 50%;
+      top: 50%;
     }
     
-    .controls {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 20px;
+    #text-input {
+      width: 100%;
+      height: 100px;
+      padding: 10px;
+      margin-bottom: 10px;
     }
     
     button {
-      background: var(--primary);
+      padding: 10px 15px;
+      background: #6c63ff;
       color: white;
       border: none;
-      padding: 10px 15px;
       border-radius: 5px;
-      margin: 5px;
-      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Photo Pe Naam</h1>
-    
-    <div class="preview-area">
-      <canvas id="canvas"></canvas>
-      <img id="outputImage" style="display: none">
-      <div class="text-overlay" id="shayariTextElement">यहाँ अपनी शायरी दिखाई देगी</div>
-    </div>
-    
-    <div class="controls">
-      <input type="file" id="imageUpload" accept="image/*">
-      <textarea id="shayariText" placeholder="अपनी शायरी यहाँ लिखें..."></textarea>
-      <button onclick="updateText()">टेक्स्ट अपडेट करें</button>
-      <button onclick="downloadImage()"><i class="fas fa-download"></i> डाउनलोड</button>
-    </div>
+  <div id="canvas-container">
+    <div id="shayari-text">अपनी शायरी यहाँ लिखें</div>
   </div>
+  
+  <textarea id="text-input" placeholder="अपनी शायरी यहाँ लिखें..."></textarea>
+  <button onclick="updateText()">अपडेट करें</button>
 
   <script>
-    // Touch Controls for Text Positioning
-    const textElement = document.getElementById('shayariTextElement');
+    const textElement = document.getElementById('shayari-text');
+    const textInput = document.getElementById('text-input');
+    
+    // Initialize variables for touch handling
     let isDragging = false;
     let startX, startY;
     let startFontSize;
     let initialDistance = null;
+    let currentX = 50, currentY = 50; // Starting position (percentage)
 
-    // Single finger drag
+    // Update text content
+    function updateText() {
+      textElement.textContent = textInput.value || "अपनी शायरी यहाँ लिखें";
+    }
+
+    // Touch start handler
     textElement.addEventListener('touchstart', (e) => {
       if (e.touches.length === 1) {
+        // Single touch - prepare for dragging
         isDragging = true;
-        startX = e.touches[0].clientX - textElement.offsetLeft;
-        startY = e.touches[0].clientY - textElement.offsetTop;
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
       } else if (e.touches.length === 2) {
-        // Pinch to zoom
+        // Two touches - prepare for pinch zoom
         initialDistance = getDistance(e.touches[0], e.touches[1]);
         startFontSize = parseInt(window.getComputedStyle(textElement).fontSize);
       }
     });
 
+    // Touch move handler
     textElement.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      
       if (isDragging && e.touches.length === 1) {
-        e.preventDefault();
-        textElement.style.left = (e.touches[0].clientX - startX) + 'px';
-        textElement.style.top = (e.touches[0].clientY - startY) + 'px';
-      } else if (e.touches.length === 2) {
+        // Handle dragging
+        const dx = e.touches[0].clientX - startX;
+        const dy = e.touches[0].clientY - startY;
+        
+        currentX += (dx / window.innerWidth) * 100;
+        currentY += (dy / window.innerHeight) * 100;
+        
+        // Limit movement to container bounds
+        currentX = Math.max(0, Math.min(100, currentX));
+        currentY = Math.max(0, Math.min(100, currentY));
+        
+        textElement.style.left = currentX + '%';
+        textElement.style.top = currentY + '%';
+        
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      } 
+      else if (e.touches.length === 2) {
         // Handle pinch zoom
-        e.preventDefault();
         const currentDistance = getDistance(e.touches[0], e.touches[1]);
         if (initialDistance !== null) {
           const scale = currentDistance / initialDistance;
-          textElement.style.fontSize = (startFontSize * scale) + 'px';
+          const newSize = Math.max(16, Math.min(72, startFontSize * scale));
+          textElement.style.fontSize = newSize + 'px';
         }
       }
     });
 
+    // Touch end handler
     textElement.addEventListener('touchend', () => {
       isDragging = false;
       initialDistance = null;
     });
 
+    // Calculate distance between two touch points
     function getDistance(touch1, touch2) {
-      return Math.hypot(
-        touch2.clientX - touch1.clientX,
-        touch2.clientY - touch1.clientY
+      return Math.sqrt(
+        Math.pow(touch2.clientX - touch1.clientX, 2) + 
+        Math.pow(touch2.clientY - touch1.clientY, 2)
       );
-    }
-
-    function updateText() {
-      const text = document.getElementById('shayariText').value;
-      textElement.textContent = text;
-    }
-
-    function downloadImage() {
-      alert("Download functionality would be implemented here");
-      // Your existing download logic
     }
 
     // Initialize text position
     textElement.style.left = '50%';
     textElement.style.top = '50%';
-    textElement.style.transform = 'translate(-50%, -50%)';
   </script>
 </body>
 </html>
